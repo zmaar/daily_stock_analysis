@@ -115,7 +115,7 @@ def _get_market_review_text(language: str) -> dict[str, str]:
 def _resolve_market_review_regions(raw_region: Optional[str]) -> list[str]:
     """Normalize MARKET_REVIEW_REGION into an ordered, non-empty region list."""
 
-    region = str(raw_region or 'cn').strip().lower()
+    region = str(raw_region or 'us').strip().lower()
     if region == 'both':
         return list(_MARKET_REVIEW_REGION_ORDER)
     if ',' in region:
@@ -124,10 +124,10 @@ def _resolve_market_review_regions(raw_region: Optional[str]) -> list[str]:
             for item in region.split(',')
             if item.strip().lower() in _VALID_MARKET_REVIEW_REGIONS
         }
-        return [market for market in _MARKET_REVIEW_REGION_ORDER if market in requested] or ['cn']
+        return [market for market in _MARKET_REVIEW_REGION_ORDER if market in requested] or ['us']
     if region in _VALID_MARKET_REVIEW_REGIONS:
         return [region]
-    return ['cn']
+    return ['us']
 
 
 def run_market_review(
@@ -169,7 +169,7 @@ def run_market_review(
     raw_region = (
         override_region
         if override_region is not None
-        else (getattr(runtime_config, 'market_review_region', 'cn') or 'cn')
+        else (getattr(runtime_config, 'market_review_region', 'us') or 'us')
     )
     run_markets = _resolve_market_review_regions(raw_region)
     persist_region = ','.join(run_markets) if len(run_markets) > 1 else run_markets[0]

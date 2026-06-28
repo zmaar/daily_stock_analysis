@@ -453,7 +453,7 @@ def _compute_trading_day_filter(
 
     if config.market_review_enabled and not getattr(args, 'no_market_review', False):
         effective_region = compute_effective_region(
-            getattr(config, 'market_review_region', 'cn') or 'cn', open_markets
+            getattr(config, 'market_review_region', 'us') or 'us', open_markets
         )
     else:
         effective_region = None
@@ -695,7 +695,7 @@ def run_full_analysis(
         market_review_region = (
             effective_region
             if effective_region is not None
-            else (getattr(config, 'market_review_region', 'cn') or 'cn')
+            else (getattr(config, 'market_review_region', 'us') or 'us')
         )
         should_run_market_review = (
             config.market_review_enabled
@@ -1400,7 +1400,7 @@ def main() -> int:
                 from src.core.trading_calendar import get_open_markets_today, compute_effective_region as _compute_region
                 open_markets = get_open_markets_today()
                 effective_region = _compute_region(
-                    getattr(config, 'market_review_region', 'cn') or 'cn', open_markets
+                    getattr(config, 'market_review_region', 'us') or 'us', open_markets
                 )
                 if effective_region == '':
                     logger.info("今日大盘复盘相关市场均为非交易日，跳过执行。可使用 --force-run 强制执行。")
